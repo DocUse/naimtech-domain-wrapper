@@ -36,12 +36,36 @@
 <body>
   <div class="frame-wrap">
     <iframe
-      src="https://script.google.com/macros/s/AKfycbzRU28BHdPoxo_AroG5U7mt0lUJUPugEPCoM1pF70sylaxRuocsErlEmS-XXBp70a8ryA/exec"
+      id="partner-app-frame"
       title="NaimTech Partners"
       loading="eager"
       referrerpolicy="no-referrer-when-downgrade"
       allow="clipboard-write"
     ></iframe>
   </div>
+  <script>
+    (function () {
+      var iframe = document.getElementById('partner-app-frame');
+      if (!iframe) return;
+
+      var appUrl = new URL('https://script.google.com/macros/s/AKfycbzRU28BHdPoxo_AroG5U7mt0lUJUPugEPCoM1pF70sylaxRuocsErlEmS-XXBp70a8ryA/exec');
+      var wrapperUrl = new URL(window.location.href);
+
+      if (wrapperUrl.search) {
+        appUrl.search = wrapperUrl.search;
+      }
+
+      iframe.src = appUrl.toString();
+
+      if (wrapperUrl.searchParams.has('login_token')) {
+        wrapperUrl.searchParams.delete('login_token');
+        var nextUrl =
+          wrapperUrl.pathname +
+          (wrapperUrl.search ? wrapperUrl.search : '') +
+          (wrapperUrl.hash ? wrapperUrl.hash : '');
+        window.history.replaceState(null, '', nextUrl);
+      }
+    })();
+  </script>
 </body>
 </html>
